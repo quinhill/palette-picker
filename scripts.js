@@ -39,34 +39,19 @@ $('#5').on('click', handleLockColor);
 
 function generatePalette() {
   palette.generateColors()
-  console.log(palette)
+  assignColors()
 }
 
-function getColors(color) {
-  $('.color-container').forEach(color => {
-    
+function assignColors() {
+  const colors = palette.colors;
+  $('.color-container').each(function(index) {
+    $(this).css("backgroundColor", colors[index].color)
+  })
+  $('.color-tag').each(function (index) {
+    $(this).text(colors[index].color)
   })
 }
 
-function getColor2(color) {
-  $('#color-two').css("backgroundColor", color)
-  $('#color-name-two').text(`${color}`)
-}
-
-function getColor3(color) {
-  $('#color-three').css("backgroundColor", color)
-  $('#color-name-three').text(`${color}`)
-}
-
-function getColor4(color) {
-  $('#color-four').css("backgroundColor", color)
-  $('#color-name-four').text(`${color}`)
-}
-
-function getColor5(color) {
-  $('#color-five').css("backgroundColor", color)
-  $('#color-name-five').text(`${color}`)
-}
 
 function handleLockColor(event) {
   const id = event.target.id;
