@@ -1,18 +1,51 @@
-import Color from './Color';
-import Palette from './Palette';
+class Palette {
+  constructor() {
+    this.colors = [
+      { color: null, locked: false },
+      { color: null, locked: false },
+      { color: null, locked: false },
+      { color: null, locked: false },
+      { color: null, locked: false }
+    ]
+  }
+  
+  randomColor() {
+    return '#' + (Math.random() * 0xFFFFFF << 0).toString(16)
+  }
+
+  generateColors() {
+    this.colors.forEach(colorNum => {
+      if(!colorNum.locked) {
+        colorNum.color = this.randomColor()
+      }
+    })
+  }
+
+  lockColor(id) {
+    this.colors[id].locked = !this.colors[id].locked;
+  }
+}
+
+let palette = new Palette();
 
 generatePalette()
 
-$('.generate-button').on('click', generatePalette)
+$('.generate-button').on('click', generatePalette);
+$('#1').on('click', handleLockColor);
+$('#2').on('click', handleLockColor);
+$('#3').on('click', handleLockColor);
+$('#4').on('click', handleLockColor);
+$('#5').on('click', handleLockColor);
 
 function generatePalette() {
-  Palette = new Palette();
-  console.log(Palette);
+  palette.generateColors()
+  console.log(palette)
 }
 
-function getColor1(color) {
-  $('#color-one').css("backgroundColor", color)
-  $('#color-name-one').text(`${color}`)
+function getColors(color) {
+  $('.color-container').forEach(color => {
+    
+  })
 }
 
 function getColor2(color) {
@@ -35,3 +68,8 @@ function getColor5(color) {
   $('#color-name-five').text(`${color}`)
 }
 
+function handleLockColor(event) {
+  const id = event.target.id;
+  palette.lockColor(id);
+  console.log(palette)
+}
