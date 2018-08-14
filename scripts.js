@@ -1,13 +1,9 @@
-
-$('.generate-button').on('click', generatePalette)
-
-function randomColor() {
-  return  '#' + (Math.random() * 0xFFFFFF << 0).toString(16)
-}
-
-
+let Color = require('./Color');
+let Palette = require('./Palette');
 
 generatePalette()
+
+$('.generate-button').on('click', generatePalette)
 
 function generatePalette() {
   getColor1(randomColor())
@@ -41,3 +37,4 @@ function getColor5(color) {
   $('#color-five').css("backgroundColor", color)
   $('#color-name-five').text(`${color}`)
 }
+
