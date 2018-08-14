@@ -1,16 +1,13 @@
-let Color = require('./Color');
-let Palette = require('./Palette');
+import Color from './Color';
+import Palette from './Palette';
 
 generatePalette()
 
 $('.generate-button').on('click', generatePalette)
 
 function generatePalette() {
-  getColor1(randomColor())
-  getColor2(randomColor())
-  getColor3(randomColor())
-  getColor4(randomColor())
-  getColor5(randomColor())
+  Palette = new Palette();
+  console.log(Palette);
 }
 
 function getColor1(color) {
