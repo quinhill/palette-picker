@@ -2,10 +2,13 @@
   "name": "palette-picker",
   "version": "1.0.0",
   "description": "",
-  "main": "Color.js",
   "dependencies": {
     "babel-cli": "^6.26.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
     "jquery": "^3.3.1",
+    "knex": "^0.15.2",
+    "pg": "^7.4.3",
     "require": "^2.4.20",
     "webpack": "^4.16.5"
   },

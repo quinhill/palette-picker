@@ -56,5 +56,4 @@ function assignColors() {
 function handleLockColor(event) {
   const id = event.target.id;
   palette.lockColor(id);
-  console.log(palette)
 }
