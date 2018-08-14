@@ -5,6 +5,10 @@ function randomColor() {
   return  '#' + (Math.random() * 0xFFFFFF << 0).toString(16)
 }
 
+
+
+generatePalette()
+
 function generatePalette() {
   getColor1(randomColor())
   getColor2(randomColor())
