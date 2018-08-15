@@ -86,8 +86,9 @@ app.get('/api/v1/projects/:id', (request, response) => {
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
+  console.log(project)
 
-  for (let requiredParameter of 'name') {
+  for (let requiredParameter of ['name']) {
     if (!project[requiredParameter]) {
       return response
         .status(422)
@@ -95,7 +96,7 @@ app.post('/api/v1/projects', (request, response) => {
     }
   }
 
-  database('project').insert(project, 'id')
+  database('projects').insert(project, 'id')
     .then(project => {
       response.status(201).json({ id: project[0] })
     })

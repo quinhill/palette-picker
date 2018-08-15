@@ -44,6 +44,20 @@ function generatePalette() {
   assignColors()
 }
 
+getProjects()
+
+function getProjects() {
+  fetch('http://localhost:3000/api/v1/projects')
+    .then(response => response.json())
+    .then(data => populateSelect(data))
+}
+
+function populateSelect(projects) {
+  projects.forEach(project => {
+    $('#project-select').append(`<option value="${project.name}">${project.name}</option>`)
+  })
+}
+
 function assignColors() {
   const colors = palette.colors;
   $('.color-container').each(function(index) {
@@ -72,11 +86,33 @@ function toggleLockedClass(id) {
 function getProjectName(event) {
   event.preventDefault();
   const projectName = $('.project-name-input').val();
-  console.log(projectName);
+  $('#project-select').append(`<option value="${projectName}">${projectName}</option>`);
+  const project = { name: projectName };
+  postProject(project);
+}
+
+function postProject(project) {
+  const url = 'http://localhost:3000/api/v1/projects';
+  fetch(url,
+    {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify(project)
+    })
+    .then(response => response.json())
+    .catch(error => console.log(error.message))
 }
 
 function getPaletteName(event) {
   event.preventDefault();
+  const projectName = $('#project-select option:selected').val();
+  
   const paletteName = $('.palette-name-input').val();
-  console.log(paletteName);
+  createOptionsObj(paletteName);
+}
+
+function createOptionsObj(name) {
+
 }
