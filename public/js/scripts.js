@@ -55,5 +55,15 @@ function assignColors() {
 
 function handleLockColor(event) {
   const id = event.target.id;
+  toggleLockedClass(id)
   palette.lockColor(id);
 }
+
+function toggleLockedClass(id) {
+  if ($(`#${id}`).hasClass('locked')) {
+    $(`#${id}`).removeClass('locked')
+  } else {
+    $(`#${id}`).addClass('locked')
+  }
+}
+
