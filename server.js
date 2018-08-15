@@ -3,9 +3,13 @@ const app = express();
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
+const bodyParser = require('body-parser')
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Palette Picker';
+app.use(express.static('public'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/v1/palettes', (request, response) => {
   database('palettes').select()
@@ -19,9 +23,9 @@ app.get('/api/v1/palettes', (request, response) => {
 
 app.get('api/v1/palette/:id', (request, response) => {
   database('palettes').where('project_id', request.params.project_id).select()
-    .then(palette => {
-      if (palette.length) {
-        response.status(200).json(palette);
+    .then(palettes => {
+      if (palettes.length) {
+        response.status(200).json(palettes);
       } else {
         response.status(404).json({
           error: `Could not find palette with id ${request.params.id}`
