@@ -6,10 +6,10 @@ module.exports = {
     client: 'pg',
     connection: {
       filename: 'postgres://localhost/palette_picker',
-      useNullAsDefault: true,
       migrations: {
         directory: './db/migrations'
       },
+      useNullAsDefault: true,
       seeds: {
         directory: '.db/seeds/dev'
       }
