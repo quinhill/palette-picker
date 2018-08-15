@@ -45,17 +45,21 @@
     <button class="generate-button">Generate Palette</button>
   </div>
   <div class="form-container">
-    <form>
-      <input class="project-name-input" type="text" placeholder="New project name" />
-      <button type="submit">Create new project</button>
+    <form id="name-project-form">
+      <input 
+        class="project-name-input" 
+        type="text" 
+        placeholder="New project name" 
+      />
+      <input id="create-project-button" type="submit" value="Create new project" />
     </form>
   </div>
   <div class="form-container">
-    <form>
+    <form id="name-palette-form" >
       <select id="project-select">
       </select>
       <input class="palette-name-input" type="text" placeholder="palette name" />
-      <button type="submit">Save Palette</button>
+      <input type="submit" value="Save Palette" />
     </form>
   </div>
   <div class="saved-palettes-container"></div>

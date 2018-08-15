@@ -36,6 +36,8 @@ $('#2').on('click', handleLockColor);
 $('#3').on('click', handleLockColor);
 $('#4').on('click', handleLockColor);
 $('#5').on('click', handleLockColor);
+$('#name-project-form').on('submit', getProjectName);
+$('#name-palette-form').on('submit', getPaletteName)
 
 function generatePalette() {
   palette.generateColors()
@@ -67,3 +69,14 @@ function toggleLockedClass(id) {
   }
 }
 
+function getProjectName(event) {
+  event.preventDefault();
+  const projectName = $('.project-name-input').val();
+  console.log(projectName);
+}
+
+function getPaletteName(event) {
+  event.preventDefault();
+  const paletteName = $('.palette-name-input').val();
+  console.log(paletteName);
+}
