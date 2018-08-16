@@ -105,14 +105,39 @@ function postProject(project) {
     .catch(error => console.log(error.message))
 }
 
-function getPaletteName(event) {
+async function getPaletteName(event) {
   event.preventDefault();
   const projectName = $('#project-select option:selected').val();
-  
   const paletteName = $('.palette-name-input').val();
-  createOptionsObj(paletteName);
+  const projectId = await fetchProjectId(projectName)
+  postPalette(paletteName, projectId)
 }
 
-function createOptionsObj(name) {
+async function fetchProjectId(projectName) {
+  const url = 'http://localhost:3000/api/v1/projects';
+  const response = await fetch(url);
+  const result = await response.json();
+  const project = result.find(project => project.name === projectName);
+  return project.id;
+}
 
+
+async function postPalette(paletteName, projectId) {
+  const colors = palette.colors.map((colorNum, i) => {
+    const colorName = `color_${i + 1}`;
+    return {[colorName]: colorNum.color}
+  })
+  let body = {name: paletteName, project_id: projectId}
+  colors.forEach(color => {
+    body = {...body, ...color}
+  })
+  const url = 'http://localhost:3000/api/v1/projects'
+  const options = {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body
+    };
+  console.log(options)
 }
