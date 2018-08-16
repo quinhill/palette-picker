@@ -122,7 +122,7 @@ async function fetchProjectId(projectName) {
 }
 
 
-async function postPalette(paletteName, projectId) {
+function postPalette(paletteName, projectId) {
   const colors = palette.colors.map((colorNum, i) => {
     const colorName = `color_${i + 1}`;
     return {[colorName]: colorNum.color}
@@ -138,6 +138,7 @@ async function postPalette(paletteName, projectId) {
           'Content-Type': 'application/json',
       },
       body
-    };
-  console.log(options)
+  };
+  fetch(url, options)
+    .then(response => console.log(response))
 }

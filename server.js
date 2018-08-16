@@ -40,7 +40,15 @@ app.get('api/v1/palette/:id', (request, response) => {
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
 
-  for (let requiredParameter of ['name', 'project_id']) {
+  for (let requiredParameter of [
+    'name', 
+    'project_id',
+    'color_1',
+    'color_2',
+    'color_3',
+    'color_4',
+    'color_5',
+  ]) {
     if (!palette[requiredParameter]) {
       return response
         .status(422)
