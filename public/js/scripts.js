@@ -36,7 +36,6 @@ class Palette {
   }
   
   lockColor(id) {
-    console.log(id)
     this.colors[id].locked = !this.colors[id].locked;
   }
   
@@ -64,6 +63,7 @@ getProjects()
 async function checkProjects() {
   $('.saved-palettes-container').empty();
   const response = await fetch(projectsUrl);
+  console.log(response)
   const projects = await response.json();
   projects.forEach(project => {
     $('.saved-palettes-container').append(`
