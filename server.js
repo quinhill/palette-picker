@@ -3,12 +3,12 @@ const app = express();
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 
 app.set('port', process.env.PORT || 3000);
 app.locals.title = 'Palette Picker';
-app.use(express.static('public'))
-app.use(bodyParser.json())
+app.use(express.static('public'));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/v1/palettes', (request, response) => {
@@ -21,21 +21,12 @@ app.get('/api/v1/palettes', (request, response) => {
     });
 });
 
-app.get('api/v1/palette/:id', (request, response) => {
-  database('palettes').where('project_id', request.params.project_id).select()
-    .then(palettes => {
-      if (palettes.length) {
-        response.status(200).json(palettes);
-      } else {
-        response.status(404).json({
-          error: `Could not find palette with id ${request.params.id}`
-        });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
-});
+app.get('/api/v1/palettes/:id', (request, response) => {
+  database('palettes').where('id', request.params.id).select()
+  .then(palette => {
+    response.status(200).json(palette)
+  })
+})
 
 app.post('/api/v1/palettes', (request, response) => {
   const palette = request.body;
@@ -65,52 +56,57 @@ app.post('/api/v1/palettes', (request, response) => {
     });
 });
 
+app.delete('/api/v1/palettes/:id', (request, response) => {
+  database('palettes').where('id', request.params.id).del()
+  .then(palette => palette)
+})
+
+
 app.get('/api/v1/projects', (request, response) => {
   database('projects').select()
-    .then((projects) => {
-      response.status(200).json(projects)
-    })
-    .catch((error) => {
-      response.status(500).json({ error });
-    });
+  .then((projects) => {
+    response.status(200).json(projects)
+  })
+  .catch((error) => {
+    response.status(500).json({ error });
+  });
 });
 
 app.get('/api/v1/projects/:id', (request, response) => {
   database('projects').where('id', request.params.id).select()
-    .then(projects => {
-      if (projects.length) {
-        response.status(200).json(palette);
-      } else {
-        response.status(404).json({
-          error: `Could not find palette with id ${request.params.id}`
-        });
-      }
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  .then(projects => {
+    if (projects.length) {
+      response.status(200).json(palette);
+    } else {
+      response.status(404).json({
+        error: `Could not find palette with id ${request.params.id}`
+      });
+    }
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
 });
 
 
 app.post('/api/v1/projects', (request, response) => {
   const project = request.body;
-  console.log(project)
-
+  
   for (let requiredParameter of ['name']) {
     if (!project[requiredParameter]) {
       return response
-        .status(422)
-        .send({ error: `Expected format: { name: <String>}. You're missing a "${requiredParameter}" property.` });
+      .status(422)
+      .send({ error: `Expected format: { name: <String>}. You're missing a "${requiredParameter}" property.` });
     }
   }
-
+  
   database('projects').insert(project, 'id')
-    .then(project => {
-      response.status(201).json({ id: project[0] })
-    })
-    .catch(error => {
-      response.status(500).json({ error });
-    });
+  .then(project => {
+    response.status(201).json({ id: project[0] })
+  })
+  .catch(error => {
+    response.status(500).json({ error });
+  });
 });
 
 app.listen(app.get('port'), () => {

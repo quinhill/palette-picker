@@ -1,3 +1,17 @@
+$('.generate-button').on('click', generatePalette);
+$('#1').on('click', handleLockColor);
+$('#2').on('click', handleLockColor);
+$('#3').on('click', handleLockColor);
+$('#4').on('click', handleLockColor);
+$('#5').on('click', handleLockColor);
+$('#name-project-form').on('submit', getProjectName);
+$('#name-palette-form').on('submit', getPaletteName);
+$('.saved-palettes-container').on('click', '.delete-palette', deletePalette);
+$('.saved-palettes-container').on('click', '.saved-palette', showPalette);
+
+const projectsUrl = 'http://localhost:3000/api/v1/projects';
+const palettesUrl = 'http://localhost:3000/api/v1/palettes';
+
 class Palette {
   constructor() {
     this.colors = [
@@ -12,7 +26,7 @@ class Palette {
   randomColor() {
     return '#' + (Math.random() * 0xFFFFFF << 0).toString(16)
   }
-
+  
   generateColors() {
     this.colors.forEach(colorNum => {
       if(!colorNum.locked) {
@@ -20,31 +34,100 @@ class Palette {
       }
     })
   }
-
+  
   lockColor(id) {
     this.colors[id].locked = !this.colors[id].locked;
+  }
+  
+  unlockAll() {
+    this.colors.forEach(color => {
+      color.locked = false
+    })
+  }
+
+  assignClicked(displayColors) {
+    this.colors.forEach((colorNum, index) => {
+      colorNum.color = displayColors[index]
+    })
   }
 }
 
 let palette = new Palette();
 
-generatePalette()
+generatePalette();
 
-$('.generate-button').on('click', generatePalette);
-$('#1').on('click', handleLockColor);
-$('#2').on('click', handleLockColor);
-$('#3').on('click', handleLockColor);
-$('#4').on('click', handleLockColor);
-$('#5').on('click', handleLockColor);
-$('#name-project-form').on('submit', getProjectName);
-$('#name-palette-form').on('submit', getPaletteName)
+checkProjects();
+
+getProjects()
+
+async function checkProjects() {
+  $('.saved-palettes-container').empty();
+  const response = await fetch(projectsUrl);
+  const projects = await response.json();
+  projects.forEach(project => {
+    $('.saved-palettes-container').append(`
+      <div class="project-container">
+      <h3 class="project-title" id="project${project.id}">
+        ${project.name}
+      </h3>
+      <button class="delete-project" id="${project.id}">trash</button>
+      </div>
+      `)
+    appendPalettes(project.id)
+  })
+}
+
+async function appendPalettes(id) {
+  const response = await fetch(palettesUrl)
+  const palettes = await response.json()
+  palettes.forEach((palette) => {
+    if (palette.project_id === id) {
+      $(`#project${id}`).append(`
+        <div id="palette${palette.id}>
+          <h5 class="palette-title">${palette.name}</h5>
+          <div class="saved-palette" id="${palette.id}">
+            <div class="saved-color" style="background-color:${palette.color_1};"></div>
+            <div class="saved-color" style="background-color:${palette.color_2};"></div>
+            <div class="saved-color" style="background-color:${palette.color_3};"></div>
+            <div class="saved-color" style="background-color:${palette.color_4};"></div>
+            <div class="saved-color" style="background-color:${palette.color_5};"></div>
+          </div>
+          <button class="delete-palette" id="${palette.id}">
+            trash
+          </button>
+        </div>
+        `)
+    }
+  })
+}
+
+async function showPalette(event) {
+  const id = $(event.target).parent().attr('id');
+  const response = await fetch(`http://localhost:3000/api/v1/palettes/${id}`);
+  const result = await response.json()
+  const currPalette = result[0]
+  const paletteKeys = Object.keys(currPalette)
+  const colorKeys = paletteKeys.filter(color => {
+    return color.split('_')[0] === 'color'
+  })
+  const colors = colorKeys.map(color => currPalette[color])
+  palette.assignClicked(colors);
+  assignColors();
+  resetLocks();
+}
+
+async function deletePalette(event) {
+  $(event.target).closest('div').remove();
+  const id = event.target.id;
+  const url = `http://localhost:3000/api/v1/palettes/${id}`
+  await fetch(url, {method: "DELETE"})
+}
 
 function generatePalette() {
   palette.generateColors()
   assignColors()
 }
 
-getProjects()
 
 function getProjects() {
   fetch('http://localhost:3000/api/v1/projects')
@@ -58,8 +141,8 @@ function populateSelect(projects) {
   })
 }
 
-function assignColors() {
-  const colors = palette.colors;
+function assignColors(colorsArray) {
+  const colors = colorsArray || palette.colors;
   $('.color-container').each(function(index) {
     $(this).css("backgroundColor", colors[index].color)
   })
@@ -111,6 +194,14 @@ async function getPaletteName(event) {
   const paletteName = $('.palette-name-input').val();
   const projectId = await fetchProjectId(projectName)
   postPalette(paletteName, projectId)
+  resetLocks()
+}
+
+function resetLocks() {
+  $('.color-lock').each(function() {
+    $(this).removeClass('locked')
+  })
+  palette.unlockAll()
 }
 
 async function fetchProjectId(projectName) {
@@ -127,18 +218,19 @@ function postPalette(paletteName, projectId) {
     const colorName = `color_${i + 1}`;
     return {[colorName]: colorNum.color}
   })
-  let body = {name: paletteName, project_id: projectId}
+  let bodyObj = {name: paletteName, project_id: projectId}
   colors.forEach(color => {
-    body = {...body, ...color}
+    bodyObj = {...bodyObj, ...color}
   })
-  const url = 'http://localhost:3000/api/v1/projects'
+  const url = 'http://localhost:3000/api/v1/palettes'
   const options = {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
       },
-      body
+      body: JSON.stringify(bodyObj)
   };
   fetch(url, options)
-    .then(response => console.log(response))
+    .then(response => response);
+  checkProjects()
 }
