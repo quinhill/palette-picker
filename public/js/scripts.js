@@ -1,9 +1,9 @@
 $('.generate-button').on('click', generatePalette);
+$('#0').on('click', handleLockColor);
 $('#1').on('click', handleLockColor);
 $('#2').on('click', handleLockColor);
 $('#3').on('click', handleLockColor);
 $('#4').on('click', handleLockColor);
-$('#5').on('click', handleLockColor);
 $('#name-project-form').on('submit', getProjectName);
 $('#name-palette-form').on('submit', getPaletteName);
 $('.saved-palettes-container').on('click', '.delete-palette', deletePalette);
@@ -36,6 +36,7 @@ class Palette {
   }
   
   lockColor(id) {
+    console.log(id)
     this.colors[id].locked = !this.colors[id].locked;
   }
   
