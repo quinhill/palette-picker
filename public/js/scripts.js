@@ -9,8 +9,8 @@ $('#name-palette-form').on('submit', getPaletteName);
 $('.saved-palettes-container').on('click', '.delete-palette', deletePalette);
 $('.saved-palettes-container').on('click', '.saved-palette', showPalette);
 
-const projectsUrl = 'http://localhost:3000/api/v1/projects';
-const palettesUrl = 'http://localhost:3000/api/v1/palettes';
+const projectsUrl = '/api/v1/projects';
+const palettesUrl = '/api/v1/palettes';
 
 class Palette {
   constructor() {
@@ -103,7 +103,7 @@ async function appendPalettes(id) {
 
 async function showPalette(event) {
   const id = $(event.target).parent().attr('id');
-  const response = await fetch(`http://localhost:3000/api/v1/palettes/${id}`);
+  const response = await fetch(`/api/v1/palettes/${id}`);
   const result = await response.json()
   const currPalette = result[0]
   const paletteKeys = Object.keys(currPalette)
@@ -119,7 +119,7 @@ async function showPalette(event) {
 async function deletePalette(event) {
   $(event.target).closest('div').remove();
   const id = event.target.id;
-  const url = `http://localhost:3000/api/v1/palettes/${id}`
+  const url = `/api/v1/palettes/${id}`
   await fetch(url, {method: "DELETE"})
 }
 
@@ -130,7 +130,7 @@ function generatePalette() {
 
 
 function getProjects() {
-  fetch('http://localhost:3000/api/v1/projects')
+  fetch(projectsUrl)
     .then(response => response.json())
     .then(data => populateSelect(data))
 }
@@ -175,8 +175,7 @@ function getProjectName(event) {
 }
 
 function postProject(project) {
-  const url = 'http://localhost:3000/api/v1/projects';
-  fetch(url,
+  fetch(projectsUrl,
     {
       method: "POST",
       headers: {
@@ -205,8 +204,7 @@ function resetLocks() {
 }
 
 async function fetchProjectId(projectName) {
-  const url = 'http://localhost:3000/api/v1/projects';
-  const response = await fetch(url);
+  const response = await fetch(projectsUrl);
   const result = await response.json();
   const project = result.find(project => project.name === projectName);
   return project.id;
@@ -222,7 +220,6 @@ function postPalette(paletteName, projectId) {
   colors.forEach(color => {
     bodyObj = {...bodyObj, ...color}
   })
-  const url = 'http://localhost:3000/api/v1/palettes'
   const options = {
       method: 'POST',
       headers: {
@@ -230,7 +227,7 @@ function postPalette(paletteName, projectId) {
       },
       body: JSON.stringify(bodyObj)
   };
-  fetch(url, options)
+  fetch(palettesUrl, options)
     .then(response => response);
   checkProjects()
 }
