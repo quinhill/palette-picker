@@ -70,7 +70,6 @@ async function checkProjects() {
       <h3 class="project-title" id="project${project.id}">
         ${project.name}
       </h3>
-      <button class="delete-project" id="${project.id}">trash</button>
       </div>
       `)
     appendPalettes(project.id)
