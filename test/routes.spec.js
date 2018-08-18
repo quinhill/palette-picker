@@ -38,6 +38,15 @@ describe('GET /api/v1/projects', () => {
     });
     done();
   });
+
+  it('should return a 404 for a route that does not exist', done => {
+    chai.request(server)
+      .get('/sad')
+      .end((err, res) => {
+        res.should.have.status(404)
+      })
+      done()
+  })
 });
 
 describe('GET /api/v1/palettes', () => {
@@ -115,8 +124,60 @@ describe('POST /api/v1/projects', () => {
     });
   });
 
-  it('should add a project', () => {
-    
+  it('should add a project', done => {
+    chai.request(server)
+      .post('/api/v1/projects')
+      .send({
+        name: 'sweet project',
+      })
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('id');
+        res.body.id.should.equal(2);
+      })
+      done()
   })
 
+  
+})
+
+describe('POST /api/v1/palettes', () => {
+
+  beforeEach(done => {
+    knex.migrate.rollback()
+    .then(() => {
+      knex.migrate.latest()
+      .then(() => {
+        return knex.seed.run()
+        .then(() => {
+          done();
+        });
+      });
+    });
+  });
+
+  it('should add a palette', done => {
+    chai.request(server)
+      .post('/api/v1/palettes')
+      .send({
+        name: 'sweet palette',
+        project_id: 1,
+        color_1: '#111111',
+        color_2: '#222222',
+        color_3: '#111111',
+        color_4: '#222222',
+        color_5: '#111111',
+        color_6: '#222222',
+      })
+      .end((err, res) => {
+        res.should.have.status(201);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('id');
+        res.body.id.should.equal(2);
+      })
+      done()
+  })
 })
