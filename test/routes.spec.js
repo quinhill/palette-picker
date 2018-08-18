@@ -147,8 +147,8 @@ describe('POST /api/v1/projects', () => {
     .end((err, response) => {
       response.should.have.status(422);
       response.body.error.should.equal('Expected format: { name: <String>}. You\'re missing a "name" property.');
-      done();
     });
+    done();
   });
 })
 
@@ -177,16 +177,26 @@ describe('POST /api/v1/palettes', () => {
         color_2: '#222222',
         color_3: '#111111',
         color_4: '#222222',
-        color_5: '#111111',
-        color_6: '#222222'
+        color_5: '#111111'
       })
       .end((err, res) => {
         res.should.have.status(201);
         res.should.be.json;
         res.body.should.be.a('object');
         res.body.should.have.property('id');
-        res.body.id.should.equal(2);
+        res.body.id.should.equal(3);
       })
       done()
   })
+
+  it('should not create a record with missing data', done => {
+    chai.request(server)
+    .post('/api/v1/palettes')
+    .send({  })
+    .end((err, response) => {
+      response.should.have.status(422);
+      response.body.error.should.equal('Expected format: { name: <String>}. You\'re missing a "name" property.');
+    });
+    done();
+  });
 })
