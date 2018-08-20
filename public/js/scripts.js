@@ -6,8 +6,8 @@ $('#3').on('click', handleLockColor);
 $('#4').on('click', handleLockColor);
 $('#name-project-form').on('submit', getProjectName);
 $('#name-palette-form').on('submit', getPaletteName);
-$('.saved-palettes-container').on('click', '.delete-palette', deletePalette);
-$('.saved-palettes-container').on('click', '.saved-palette', showPalette);
+$('.saved-projects-container').on('click', '.delete-palette', deletePalette);
+$('.saved-projects-container').on('click', '.saved-palette', showPalette);
 
 const projectsUrl = '/api/v1/projects';
 const palettesUrl = '/api/v1/palettes';
@@ -56,22 +56,23 @@ let palette = new Palette();
 
 generatePalette();
 
+getProjects();
+
 checkProjects();
 
-getProjects()
-
 async function checkProjects() {
-  $('.saved-palettes-container').empty();
+  $('.saved-projects-container').empty();
   const response = await fetch(projectsUrl);
-  console.log(response)
   const projects = await response.json();
   projects.forEach(project => {
-    $('.saved-palettes-container').append(`
-      <div class="project-container">
-      <h3 class="project-title" id="project${project.id}">
-        ${project.name}
+    $('.saved-projects-container').append(`
+    <div class="project-container">
+      <h3 class="project-title">
+      ${project.name}
       </h3>
+      <div class="saved-palette-container" id="project${project.id}">
       </div>
+    </div>
       `)
     appendPalettes(project.id)
   })
@@ -83,19 +84,21 @@ async function appendPalettes(id) {
   palettes.forEach((palette) => {
     if (palette.project_id === id) {
       $(`#project${id}`).append(`
-        <div id="palette${palette.id}>
+        <div class="mini-container" id="palette${palette.id}>
           <h5 class="palette-title">${palette.name}</h5>
-          <div class="saved-palette" id="${palette.id}">
-            <div class="saved-color" style="background-color:${palette.color_1};"></div>
-            <div class="saved-color" style="background-color:${palette.color_2};"></div>
-            <div class="saved-color" style="background-color:${palette.color_3};"></div>
-            <div class="saved-color" style="background-color:${palette.color_4};"></div>
-            <div class="saved-color" style="background-color:${palette.color_5};"></div>
+            <div class="palette-trash">
+              <div class="saved-palette" id="${palette.id}">
+                <div class="saved-color color1" style="background-color:${palette.color_1};"></div>
+                <div class="saved-color" style="background-color:${palette.color_2};"></div>
+                <div class="saved-color" style="background-color:${palette.color_3};"></div>
+                <div class="saved-color" style="background-color:${palette.color_4};"></div>
+                <div class="saved-color color5" style="background-color:${palette.color_5};"></div>
+              </div>
+              <button class="delete-palette" id="${palette.id}">
+              <img class="trash-can" src="../css/images/trash-can.svg" />
+              </button>
+              </div>
           </div>
-          <button class="delete-palette" id="${palette.id}">
-            trash
-          </button>
-        </div>
         `)
     }
   })
@@ -117,8 +120,8 @@ async function showPalette(event) {
 }
 
 async function deletePalette(event) {
-  $(event.target).closest('div').remove();
-  const id = event.target.id;
+  $(this).parent().parent('div').remove();
+  const id = $(this).attr('id');
   const url = `/api/v1/palettes/${id}`
   await fetch(url, {method: "DELETE"})
 }
@@ -168,7 +171,8 @@ function toggleLockedClass(id) {
 
 function getProjectName(event) {
   event.preventDefault();
-  const projectName = $('.project-name-input').val();
+  let projectName = $('.project-name-input').val();
+  projectName = projectName.toUpperCase();
   $('#project-select').append(`<option value="${projectName}">${projectName}</option>`);
   const project = { name: projectName };
   postProject(project);
@@ -228,6 +232,6 @@ function postPalette(paletteName, projectId) {
       body: JSON.stringify(bodyObj)
   };
   fetch(palettesUrl, options)
-    .then(response => response);
+    .then(response => response.json())
   checkProjects()
 }
