@@ -4,6 +4,6 @@ Palette Picker is an app designed to create color palettes for a project. Functi
 
 This app is deployed on Heroku at https://palette-picker-quin.herokuapp.com/
 
- ## Authors
+ ## Author
 
 * Quin Hill - https://github.com/quinhill
