@@ -8,62 +8,81 @@
   <meta name="description" content="Palette Picker">
   <meta name="author" content="SitePoint">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:400,900" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/reset.css">
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech+Mono" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-  <header></header>
-  <div class="palette-container">
-    <div id="color1" class="color-container">
-      <button id="0" class="color-lock">
-      </button>
-      <p id="color-name-one" class="color-tag"></p>
+  <header>
+    <img src="css/images/logo.png" />
+  </header>
+  <div class="background">
+    <div class="palette-div">
+      <div class="palette-container">
+        <div id="color1" class="color-container">
+          <button id="0" class="color-lock">
+          </button>
+          <p id="color-name-one" class="color-tag"></p>
+        </div>
+        <div id="color2" class="color-container">
+          <button id="1" class="color-lock">
+          </button>
+          <p id="color-name-two" class="color-tag"></p>
+        </div>
+        <div id="color3" class="color-container">
+          <button id="2" class="color-lock">
+          </button>
+          <p id="color-name-three" class="color-tag"></p>
+        </div>
+        <div id="color4" class="color-container">
+          <button id="3" class="color-lock">
+          </button>
+          <p id="color-name-four" class="color-tag"></p>
+        </div>
+        <div id="color5" class="color-container">
+          <button id="4" class="color-lock">
+          </button>
+          <p id="color-name-five" class="color-tag"></p>
+        </div>
+      </div>
     </div>
-    <div id="color2" class="color-container">
-      <button id="1" class="color-lock">
-      </button>
-      <p id="color-name-two" class="color-tag"></p>
+    <div class="generate-container">
+      <button class="generate-button"></button>
     </div>
-    <div id="color3" class="color-container">
-      <button id="2" class="color-lock">
-      </button>
-      <p id="color-name-three" class="color-tag"></p>
+    <div class="form-container">
+      <form id="name-project-form">
+        <input 
+          class="project-name-input" 
+          type="text" 
+          placeholder="New project name" 
+        />
+        <button 
+          class="button" 
+          id="create-project-button"
+          type="submit"
+        ></button>
+      </form>
     </div>
-    <div id="color4" class="color-container">
-      <button id="3" class="color-lock">
-      </button>
-      <p id="color-name-four" class="color-tag"></p>
+    <div class="form-container">
+      <form id="name-palette-form" >
+        <select id="project-select">
+        </select>
+        <input 
+          class="palette-name-input" 
+          type="text" 
+          placeholder="palette name" 
+        />
+        <button 
+          class="button" 
+          type="submit"
+          id="palette-submit"
+        ></button>
+      </form>
     </div>
-    <div id="color5" class="color-container">
-      <button id="4" class="color-lock">
-      </button>
-      <p id="color-name-five" class="color-tag"></p>
+    <div class="bottom">
+      <div class="saved-projects-container"></div>
+      </div>
     </div>
-  </div>
-  <div class="generate-container">
-    <button class="generate-button">Generate Palette</button>
-  </div>
-  <div class="form-container">
-    <form id="name-project-form">
-      <input 
-        class="project-name-input" 
-        type="text" 
-        placeholder="New project name" 
-      />
-      <input id="create-project-button" type="submit" value="Create new project" />
-    </form>
-  </div>
-  <div class="form-container">
-    <form id="name-palette-form" >
-      <select id="project-select">
-      </select>
-      <input class="palette-name-input" type="text" placeholder="palette name" />
-      <input type="submit" value="Save Palette" />
-    </form>
-  </div>
-  <div class="saved-palettes-container"></div>
-
   </div>
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/scripts.js"></script>
