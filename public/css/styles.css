@@ -94,10 +94,6 @@ img {
   box-shadow: 1px 3px 3px 1px rgba(0, 0, 0, 0.8);
 }
 
-body {
-  
-}
-
 form {
   display: flex;
   justify-content: center;
@@ -184,8 +180,7 @@ button {
   grid-template-columns: 30% 70%;
   width: 600px;
   border: 2px solid #343640;
-  display: flex;
-  justify-content: center;
+  text-align: start;
 }
 
 .project-title {
@@ -208,6 +203,7 @@ button {
 .saved-palette {
   margin: 10px;
   display: flex;
+  justify-content: flex-start;
   border-radius: 5px;
   border: 1px solid white;
   box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.6);
