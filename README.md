@@ -7,3 +7,5 @@ This app is deployed on Heroku at https://palette-picker-quin.herokuapp.com/
  ## Author
 
 * Quin Hill - https://github.com/quinhill
+
+![](https://media.giphy.com/media/cYozlgw3Zg8kjNT8sR/giphy.gif)
