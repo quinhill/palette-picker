@@ -1,7 +1,9 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "7"
-
-  before_install:
-  - npm i -g npm@version-number
+  -"node"
+services:
+  - postgresql
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database palette_picker_test;' -U postgres
