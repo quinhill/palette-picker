@@ -12,13 +12,12 @@ Functionality includes:
 * Saving a projet name
 * Saving palettes to those projects 
 
-## Goals
+### Goals
 
 The main goal of this project was to learn Node.js and code out a backend. I created Palette Picker as a student at the Turing School of Software and Design. The Challenge was in the time frame of the project, which was one week.
 
-This app is deployed on Heroku. 
-[Palette Picker link](https://palette-picker-quin.herokuapp.com/)
+This app is deployed on Heroku [Palette Picker link](https://palette-picker-quin.herokuapp.com/)
 
- ## Author
+ ### Author
 
-* Quin Hill - https://github.com/quinhill
+* Quinlan Hill - [GitHub](https://github.com/quinhill)/[Turing profile](https://alumni.turing.io/alumni/quinlan-hill)
